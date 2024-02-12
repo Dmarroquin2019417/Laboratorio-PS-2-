@@ -1,3 +1,4 @@
+// student.controller.js
 const { response } = require('express');
 const bcryptjs = require('bcryptjs');
 const Estudiante = require('../models/estudiante');
@@ -67,10 +68,55 @@ const estudiantesPost = async (req, res) => {
     });
 };
 
+const asignarCurso = async (req, res) => {
+    const { idEstudiante, idCurso } = req.body;
+
+    try {
+        const estudiante = await Estudiante.findById(idEstudiante);
+        if (!estudiante) {
+            return res.status(404).json({ msg: 'Estudiante no encontrado' });
+        }
+
+        if (estudiante.cursos.length >= 3) {
+            return res.status(400).json({ msg: 'El estudiante ya está asignado a 3 cursos' });
+        }
+
+        if (estudiante.cursos.includes(idCurso)) {
+            return res.status(400).json({ msg: 'El estudiante ya está asignado a este curso' });
+        }
+
+        estudiante.cursos.push(idCurso);
+        await estudiante.save();
+
+        res.json({ msg: 'Curso asignado correctamente', estudiante });
+    } catch (error) {
+        console.log(error);
+        res.status(500).json({ msg: 'Hubo un error al asignar el curso' });
+    }
+};
+
+const cursosAsignados = async (req, res) => {
+    const { idEstudiante } = req.params;
+
+    try {
+        const estudiante = await Estudiante.findById(idEstudiante).populate('cursos');
+        if (!estudiante) {
+            return res.status(404).json({ msg: 'Estudiante no encontrado' });
+        }
+
+        res.json({ cursos: estudiante.cursos });
+    } catch (error) {
+        console.log(error);
+        res.status(500).json({ msg: 'Hubo un error al obtener los cursos asignados' });
+    }
+};
+
 module.exports = {
     estudiantesDelete,
     estudiantesPost,
     estudiantesGet,
     getEstudianteById,
-    estudiantesPut
+    estudiantesPut,
+    asignarCurso,
+    cursosAsignados
 };
