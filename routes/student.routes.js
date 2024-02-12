@@ -2,36 +2,36 @@ const { Router } = require('express');
 const { check } = require('express-validator');
 
 const { validarCampos } = require('../middlewares/validar-campos');
-const { existenteEmail, existeMaestroById, esRolValido} = require('../helpers/db-validators');
-const { maestrosPost, maestrosGet, getMaestroById, maestrosPut, maestrosDelete } = require('../controllers/maestro.controller');
+const { existenteEmail, existeEstudianteById, esRolValido} = require('../helpers/db-validators');
+const { estudiantesPost, estudiantesGet, getEstudianteById, estudiantesPut, estudiantesDelete } = require('../controllers/student.controller'); // Importa las funciones del controlador de estudiantes
 
 const router = Router();
 
-router.get("/", maestrosGet);
+router.get("/", estudiantesGet);
 
 router.get(
     "/:id",
     [
         check("id","El id no es un formato válido de MongoDB").isMongoId(),
-        check("id").custom(existeMaestroById),
+        check("id").custom(existeEstudianteById),
         validarCampos
-    ], getMaestroById);
+    ], getEstudianteById);
 
 router.put(
     "/:id",
     [
         check("id","El id no es un formato válido de MongoDB").isMongoId(),
-        check("id").custom(existeMaestroById),
+        check("id").custom(existeEstudianteById),
         validarCampos
-    ], maestrosPut);
+    ], estudiantesPut);
 
 router.delete(
         "/:id",
         [
             check("id","El id no es un formato válido de MongoDB").isMongoId(),
-            check("id").custom(existeMaestroById),
+            check("id").custom(existeEstudianteById),
             validarCampos
-        ], maestrosDelete);
+        ], estudiantesDelete);
 
         
 router.post(
@@ -41,8 +41,8 @@ router.post(
         check("password","El password debe ser mayor a 6 caracteres").isLength({min: 6,}),
         check("correo","Este no es un correo válido").isEmail(),
         check("correo").custom(existenteEmail),
-        check("role").custom(esRolValido),
+        check("telefono","El teléfono es obligatorio").not().isEmpty(), 
         validarCampos,
-    ], maestrosPost); 
+    ], estudiantesPost); 
 
 module.exports = router;

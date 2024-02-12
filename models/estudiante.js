@@ -1,6 +1,8 @@
-const { Schema, model} = require('mongoose');
+// models/estudiante.js
 
-const Schema = Schema ({
+const { Schema, model } = require('mongoose');
+
+const EstudianteSchema = Schema({
     nombre: {
         type: String,
         required: [true, 'El nombre es obligatorio']
@@ -9,17 +11,14 @@ const Schema = Schema ({
         type: String,
         required: [true, 'El correo es obligatorio']
     },
+    telefono: {
+        type: String,
+        required: [true, 'El teléfono es obligatorio']
+    },
     password: {
         type: String,
-        required: [true, 'La password es obligatorio']
-    },
-    role:{
-        type: String,
-        required: true,
-        enum: ["TEACHER_ROLE", "STUDENT_ROLE"]
-    },
+        required: [true, 'La password es obligatoria']
+    }
 });
 
-
-
-module.exports = model('Maestro', MaestrosSchema);
+module.exports = model('Estudiante', EstudianteSchema);
