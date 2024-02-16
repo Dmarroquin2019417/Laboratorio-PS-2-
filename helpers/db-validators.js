@@ -1,30 +1,45 @@
-const Usuario = require('../models/usuario');
-const Role = require('../models/role');
+const Estudiante = require('../models/estudiante');
+const Curso = require('../models/curso')
 
 const existenteEmail = async (correo = '') => {
-    const existeEmail = await Usuario.findOne({correo});
+    const existeEmail = await Estudiante.findOne({correo});
     if(existeEmail){
         throw new Error(`El email ${ correo } ya fue registrado`);
     }
 }
 
-const existeEstudianteById = async ( id = '') => {
-    const existeUsuario = await Usuario.findOne({id});
-    if(existeUsuario){
-        throw new Error(`El usuario con el ${ id } no existe`);
+const noExistenteEmail = async (correo = '') => {
+    const existeEmail = await Estudiante.findOne({correo});
+    if(!existeEmail){
+        throw new Error(`El email ${ correo } no existe`);
     }
 }
 
-const esRolValido = async (role='') => {
-    const existeRol = await Role.findOne({role});
+const existeEstudianteById = async ( id = '') => {
+    const existeEstudiante = await Estudiante.findOne({id});
+    if(existeEstudiante){
+        throw new Error(`El Estudiante con el id: ${ id } no existe`);
+    }
+}
 
-    if(!existeRol){
-        throw new Error(`El role ${ role } no existe en base de datos.` )
+const existeCursoById = async ( id = '') => {
+    const existeCurso = await Curso.findOne({id});
+    if(existeCurso){
+        throw new Error(`El curso con el id: ${ id } no existe`);
+    }
+}
+
+const existeCursoByNombre = async ( nombre = '') => {
+    const existeCurso = await Curso.findOne({nombre});
+    if(existeCurso){
+        throw new Error(`El curso con el nombre: ${ nombre } ya existe`);
     }
 }
 
 module.exports = {
     existenteEmail,
     existeEstudianteById,
-    esRolValido
+    existeCursoById,
+    noExistenteEmail,
+    existeCursoByNombre
 }

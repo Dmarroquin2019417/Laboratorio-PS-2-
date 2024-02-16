@@ -1,7 +1,7 @@
-// student.controller.js
-const { response } = require('express');
+const { response, json } = require('express');
 const bcryptjs = require('bcryptjs');
 const Estudiante = require('../models/estudiante');
+const { generarJWT } = require("../helpers/generar-jwt");
 
 const estudiantesGet = async (req, res = response) => {
     const { limite, desde } = req.query;
@@ -33,9 +33,7 @@ const estudiantesPut = async (req, res) => {
     const { id } = req.params;
     const { _id, password, correo, telefono, ...resto } = req.body;
 
-    await Estudiante.findByIdAndUpdate(id, resto);
-
-    const estudiante = await Estudiante.findOne({ _id: id });
+    const estudiante = await Estudiante.findByIdAndUpdate(id, resto);
 
     res.status(200).json({
         msg: 'Estudiante actualizado exitosamente',
@@ -47,8 +45,7 @@ const estudiantesDelete = async (req, res) => {
     const { id } = req.params;
     await Estudiante.findByIdAndUpdate(id, { estado: false });
 
-    const estudiante = await Estudiante.findOne({ _id: id });
-
+    const estudiante = await Estudiante.findByIdAndUpdate(id, { estado: false });
     res.status(200).json({
         msg: 'Estudiante eliminado exitosamente',
         estudiante
@@ -56,8 +53,8 @@ const estudiantesDelete = async (req, res) => {
 };
 
 const estudiantesPost = async (req, res) => {
-    const { nombre, correo, telefono, password } = req.body;
-    const estudiante = new Estudiante({ nombre, correo, telefono, password });
+    const { nombre, correo, telefono, password, role } = req.body;
+    const estudiante = new Estudiante({ nombre, correo, telefono, password, role });
 
     const salt = bcryptjs.genSaltSync();
     estudiante.password = bcryptjs.hashSync(password, salt);
@@ -68,48 +65,49 @@ const estudiantesPost = async (req, res) => {
     });
 };
 
-const asignarCurso = async (req, res) => {
-    const { idEstudiante, idCurso } = req.body;
+const estudiantesLogin = async (req, res) => {
+    const { correo, password } = req.body;
 
-    try {
-        const estudiante = await Estudiante.findById(idEstudiante);
-        if (!estudiante) {
-            return res.status(404).json({ msg: 'Estudiante no encontrado' });
-        }
+    try{
+        const estudiante = await Estudiante.findOne({ correo });
 
-        if (estudiante.cursos.length >= 3) {
-            return res.status(400).json({ msg: 'El estudiante ya está asignado a 3 cursos' });
-        }
-
-        if (estudiante.cursos.includes(idCurso)) {
-            return res.status(400).json({ msg: 'El estudiante ya está asignado a este curso' });
-        }
-
-        estudiante.cursos.push(idCurso);
-        await estudiante.save();
-
-        res.json({ msg: 'Curso asignado correctamente', estudiante });
-    } catch (error) {
-        console.log(error);
-        res.status(500).json({ msg: 'Hubo un error al asignar el curso' });
+    if (!estudiante) {
+        return res.status(400).json({
+            msg: 'El Estudiante no sea encontrado'
+        });
     }
-};
 
-const cursosAsignados = async (req, res) => {
-    const { idEstudiante } = req.params;
-
-    try {
-        const estudiante = await Estudiante.findById(idEstudiante).populate('cursos');
-        if (!estudiante) {
-            return res.status(404).json({ msg: 'Estudiante no encontrado' });
-        }
-
-        res.json({ cursos: estudiante.cursos });
-    } catch (error) {
-        console.log(error);
-        res.status(500).json({ msg: 'Hubo un error al obtener los cursos asignados' });
+    if(!estudiante.estado){
+        return res.status(400).json({
+            msg: 'Estudiante borrado de la base de datos'
+        })
     }
-};
+
+    const passwordValido = bcryptjs.compareSync(password, estudiante.password);
+
+    if (!passwordValido) {
+        return res.status(400).json({
+            msg: 'Contraseña incorrecta'
+        });
+    }
+
+    const token = await generarJWT(estudiante.id)
+
+    res.status(200).json({
+        msg_1: 'Inicio de sesión exitosamente',
+        msg_2: 'Welcome '+ estudiante.nombre,
+        msg_3: 'Este su token =>'+ token,
+    });
+
+    }catch(e){
+        console.log(e);
+        res.status(500).json({
+            msg: 'Eyy un error inesperado'
+        })
+    }
+
+}
+
 
 module.exports = {
     estudiantesDelete,
@@ -117,6 +115,5 @@ module.exports = {
     estudiantesGet,
     getEstudianteById,
     estudiantesPut,
-    asignarCurso,
-    cursosAsignados
+    estudiantesLogin
 };

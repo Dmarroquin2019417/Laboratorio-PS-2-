@@ -1,0 +1,68 @@
+{
+    "client": "Thunder Client",
+    "collectionName": "Estudiantes_cursos",
+    "dateExported": "2024-02-16T16:39:47.700Z",
+    "version": "1.1",
+    "folders": [],
+    "requests": [
+        {
+            "_id": "b54cb7ea-a072-4b53-9f5d-b97bdeeb28ea",
+            "colId": "eef124b4-6bd5-4de8-b409-17bd26e2abe1",
+            "containerId": "",
+            "name": "Asignación_estudiantes_curso",
+            "url": "",
+            "method": "POST",
+            "sortNum": 10000,
+            "created": "2024-02-16T16:35:33.009Z",
+            "modified": "2024-02-16T16:37:14.235Z",
+            "headers": [],
+            "params": [],
+            "tests": []
+        },
+        {
+            "_id": "a4ef5ed6-4a63-4eee-9e00-3133ffcf7768",
+            "colId": "eef124b4-6bd5-4de8-b409-17bd26e2abe1",
+            "containerId": "",
+            "name": "Eliminar_estudiante_curso",
+            "url": "",
+            "method": "DELETE",
+            "sortNum": 20000,
+            "created": "2024-02-16T16:37:01.459Z",
+            "modified": "2024-02-16T16:37:05.480Z",
+            "headers": [],
+            "params": [],
+            "tests": []
+        },
+        {
+            "_id": "cd8a3167-8e54-4570-9695-d6e34300052c",
+            "colId": "eef124b4-6bd5-4de8-b409-17bd26e2abe1",
+            "containerId": "",
+            "name": "estudiantes_cursos",
+            "url": "",
+            "method": "GET",
+            "sortNum": 30000,
+            "created": "2024-02-16T16:37:41.083Z",
+            "modified": "2024-02-16T16:37:41.083Z",
+            "headers": []
+        },
+        {
+            "_id": "d53fcc0e-f926-4857-a8b0-6e0e46068c9d",
+            "colId": "eef124b4-6bd5-4de8-b409-17bd26e2abe1",
+            "containerId": "",
+            "name": "cursos_estudiantes",
+            "url": "http://localhost:3000/api/Asigancion_estudiantes/buscar",
+            "method": "GET",
+            "sortNum": 40000,
+            "created": "2024-02-16T16:38:31.275Z",
+            "modified": "2024-02-16T16:39:33.978Z",
+            "headers": [],
+            "params": [],
+            "body": {
+                "type": "json",
+                "raw": "{\n  \"correo\":\"student@email.com\"\n}",
+                "form": []
+            },
+            "tests": []
+        }
+    ]
+}

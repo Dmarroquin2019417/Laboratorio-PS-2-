@@ -1,48 +1,57 @@
-
 const { Router } = require('express');
 const { check } = require('express-validator');
 
 const { validarCampos } = require('../middlewares/validar-campos');
-const { existenteEmail, existeEstudianteById, esRolValido} = require('../helpers/db-validators');
-const { estudiantesPost, estudiantesGet, getEstudianteById, estudiantesPut, estudiantesDelete, asignarCurso, cursosAsignados } = require('../controllers/student.controller');
+const { existenteEmail, existeEstudianteById } = require('../helpers/db-validators');
+
+const { estudiantesPost, estudiantesGet, getEstudianteById, estudiantesPut, estudiantesDelete, estudiantesLogin } = require('../controllers/student.controller');
 
 const router = Router();
 
 router.get("/", estudiantesGet);
 
-router.get("/:id", [
-    check("id","El id no es un formato válido de MongoDB").isMongoId(),
-    check("id").custom(existeEstudianteById),
-    validarCampos
-], getEstudianteById);
+router.get(
+    "/:id",
+    [
+        check("id", "El id no es un formato válido de MongoDB").isMongoId(),
+        check("id").custom(existeEstudianteById),
+        validarCampos
+    ], getEstudianteById);
 
-router.put("/:id", [
-    check("id","El id no es un formato válido de MongoDB").isMongoId(),
-    check("id").custom(existeEstudianteById),
-    validarCampos
-], estudiantesPut);
+router.put(
+    "/:id",
+    [
+        check("id", "El id no es un formato válido de MongoDB").isMongoId(),
+        check("id").custom(existeEstudianteById),
+        validarCampos
+    ], estudiantesPut);
 
-router.delete("/:id", [
-    check("id","El id no es un formato válido de MongoDB").isMongoId(),
-    check("id").custom(existeEstudianteById),
-    validarCampos
-], estudiantesDelete);
+router.delete(
+    "/:id",
+    [
+        check("id", "El id no es un formato válido de MongoDB").isMongoId(),
+        check("id").custom(existeEstudianteById),
+        validarCampos
+    ], estudiantesDelete);
 
-router.post("/", [
-    check("nombre","El nombre es obligatorio").not().isEmpty(),
-    check("password","El password debe ser mayor a 6 caracteres").isLength({min: 6}),
-    check("correo","Este no es un correo válido").isEmail(),
-    check("correo").custom(existenteEmail),
-    check("telefono","El teléfono es obligatorio").not().isEmpty(), 
-    validarCampos,
-], estudiantesPost);
 
-router.post("/asignar-curso", asignarCurso);
+router.post(
+    "/",
+    [
+        check("nombre", "El nombre es obligatorio").not().isEmpty(),
+        check("password", "La password debe tener más de 6 letras").isLength({ min: 6, }),
+        check("correo", "El correo es obligatorio").isEmail(),
+        check("correo").custom(existenteEmail),
+        validarCampos,
+    ], estudiantesPost);
 
-router.get("/:id/cursos", [
-    check("id","El id no es un formato válido de MongoDB").isMongoId(),
-    check("id").custom(existeEstudianteById),
-    validarCampos
-], cursosAsignados);
+router.post(
+    "/login",
+    [
+        check('correo', 'Este correo no es valido').isEmail(),
+        check('password', 'La password es obligatorio').not().isEmpty(),
+        validarCampos,
+    ],
+    estudiantesLogin);
 
 module.exports = router;
