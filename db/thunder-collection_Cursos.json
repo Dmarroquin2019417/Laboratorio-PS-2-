@@ -1,0 +1,94 @@
+{
+    "client": "Thunder Client",
+    "collectionName": "Cursos",
+    "dateExported": "2024-02-18T05:15:25.619Z",
+    "version": "1.1",
+    "folders": [],
+    "requests": [
+        {
+            "_id": "1e632012-df00-4e46-a9e4-22481567d4a2",
+            "colId": "ff121366-da10-4257-9d7d-592699086b8c",
+            "containerId": "",
+            "name": "cursosGet",
+            "url": "http://localhost:3000/api/cursos",
+            "method": "GET",
+            "sortNum": 10000,
+            "created": "2024-02-18T04:13:54.799Z",
+            "modified": "2024-02-18T04:13:54.799Z",
+            "headers": [],
+            "params": [],
+            "tests": []
+        },
+        {
+            "_id": "02711089-8474-48ea-abbb-188cd7b19988",
+            "colId": "ff121366-da10-4257-9d7d-592699086b8c",
+            "containerId": "",
+            "name": "cursosPost",
+            "url": "http://localhost:3000/api/cursos",
+            "method": "POST",
+            "sortNum": 20000,
+            "created": "2024-02-18T04:13:54.800Z",
+            "modified": "2024-02-18T05:05:10.907Z",
+            "headers": [],
+            "params": [],
+            "body": {
+                "type": "json",
+                "raw": "{\n  \"nombre\":\"Ciencias Exactas\",\n  \"materia\":\"Matematicas\",\n  \"maestro\":\"teacher1@email.com\"\n}",
+                "form": []
+            },
+            "tests": []
+        },
+        {
+            "_id": "ca777017-4175-43f9-896d-7179ad75d72e",
+            "colId": "ff121366-da10-4257-9d7d-592699086b8c",
+            "containerId": "",
+            "name": "getCursosById",
+            "url": "http://localhost:3000/api/cursos/65d190067857e6a5597c2e34",
+            "method": "GET",
+            "sortNum": 30000,
+            "created": "2024-02-18T04:13:54.801Z",
+            "modified": "2024-02-18T05:05:25.987Z",
+            "headers": [],
+            "params": [],
+            "tests": []
+        },
+        {
+            "_id": "d8aa2bf4-6d11-4e2e-a56a-bd9ad005b078",
+            "colId": "ff121366-da10-4257-9d7d-592699086b8c",
+            "containerId": "",
+            "name": "cursosPut",
+            "url": "http://localhost:3000/api/cursos/65d1868e62e44e4c7b15cc0d",
+            "method": "PUT",
+            "sortNum": 40000,
+            "created": "2024-02-18T04:13:54.802Z",
+            "modified": "2024-02-18T05:05:45.348Z",
+            "headers": [],
+            "params": [],
+            "body": {
+                "type": "json",
+                "raw": "{\n  \"nombre\":\"Ciencias\",\n  \"maestro\":\"65d1868e62e44e4c7b15cc0d\"\n}",
+                "form": []
+            },
+            "tests": []
+        },
+        {
+            "_id": "d7f63cb1-d80d-40c0-98c3-49da8bf184f3",
+            "colId": "ff121366-da10-4257-9d7d-592699086b8c",
+            "containerId": "",
+            "name": "cursoDelete",
+            "url": "http://localhost:3000/api/cursos/65d1868e62e44e4c7b15cc0d",
+            "method": "DELETE",
+            "sortNum": 50000,
+            "created": "2024-02-18T04:13:54.803Z",
+            "modified": "2024-02-18T05:11:22.718Z",
+            "headers": [],
+            "params": [],
+            "body": {
+                "type": "json",
+                "raw": "{\n  \"maestro\":\"65d1868e62e44e4c7b15cc0d\"\n}",
+                "form": []
+            },
+            "tests": []
+        }
+    ]
+}
